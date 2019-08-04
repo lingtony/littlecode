@@ -9,37 +9,31 @@ import (
 	"github.com/labstack/echo"
 )
 
-//func checkErr(err error) {
-//	if err != nil {
-//		fmt.Println(err)
-//		panic(err)
-//	}
-//}
-//
-////执行shell脚本
-//func execShell(s string) (string, error) {
-//	cmd := exec.Command("/bin/bash", s)
-//
-//	var out bytes.Buffer
-//	cmd.Stdout = &out
-//
-//	err := cmd.Run()
-//	checkErr(err)
-//
-//	return out.String(), err
-//}
+
+
+func execCmd(s string) (string,error){
+}
+
 
 func update(c echo.Context) error {
 	deployname := c.QueryParam("deployname")
 	image := c.QueryParam("image")
-	namespase := c.QueryParam("namespace")
-	updateCmd := "set image deploy" + " " + deployname + " " + deployname + "=" + image + " " + "-n" + " " + namespase
-	testcmd := "get po -n " + namespase
-	cmd := exec.Command("/usr/bin/kubelet", testcmd)
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err := cmd.Run()
-	if err != nil {
+	namespace := c.QueryParam("namespace")
+	updateCmd := "kubectl set image deploy" + " " + deployname + " " + deployname + "=" + image + " " + "-n" + " " + namespace
+        testcmd := "kubectl get deploy "+deployname+" -n "+namespace
+	upcmd := exec.Command("/bin/bash","-c",updateCmd)
+	testcmd := exec.Command("/bin/bash","-c",updateCmd)
+	var upout bytes.Buffer
+	var testout bytes.Buffer
+	upcmd.Stdout = &upout
+	testcmd.Stdout = &testout
+	uperr := upcmd.Run()
+	if uperr != nil {
+		fmt.Println(uperr)
+		panic(uperr)
+	}
+	testerr := upcmd.Run()
+	if testerr != nil {
 		fmt.Println(err)
 		panic(err)
 	}
@@ -50,5 +44,5 @@ func update(c echo.Context) error {
 func main() {
 	e := echo.New()
 	e.GET("/update", update)
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":8080"))
 }
