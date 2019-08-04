@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/lingtony/littlecode/goip/ipaddr"
+	"github.com/lingtony/littlecode1/goip/ipaddr"
 )
 
 func httpserver(w http.ResponseWriter, r *http.Request) {
