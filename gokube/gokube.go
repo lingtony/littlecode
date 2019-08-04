@@ -29,7 +29,7 @@ func update(c echo.Context) error {
 func checkDeploy(c echo.Context) error {
 	deployname := c.QueryParam("deployname")
 	namespace := c.QueryParam("namespace")
-	testcmd := "kubectl get deploy " + deployname + " -n " + namespace
+	testcmd := "kubectl get deploy " + deployname + " -n " + namespace + " " + "-o wide"
 	cmd := exec.Command("/bin/bash", "-c", testcmd)
 	var out bytes.Buffer
 	cmd.Stdout = &out
