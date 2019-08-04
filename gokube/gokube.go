@@ -30,12 +30,11 @@ import (
 //}
 
 func update(c echo.Context) error {
-	// 从请求参数里获取 team 和 member 的值
 	deployname := c.QueryParam("deployname")
 	image := c.QueryParam("image")
 	namespase := c.QueryParam("namespace")
 	updateCmd := "kubectl set image deploy" + " " + deployname + " " + deployname + "=" + image + " " + "-n" + " " + namespase
-	testcmd := "kubecet get po -n " + namespase
+	testcmd := "kubectl get po -n " + namespase
 	cmd := exec.Command(testcmd)
 	var out bytes.Buffer
 	cmd.Stdout = &out
