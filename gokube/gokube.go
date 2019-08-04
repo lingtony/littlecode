@@ -33,9 +33,9 @@ func update(c echo.Context) error {
 	deployname := c.QueryParam("deployname")
 	image := c.QueryParam("image")
 	namespase := c.QueryParam("namespace")
-	updateCmd := "kubectl set image deploy" + " " + deployname + " " + deployname + "=" + image + " " + "-n" + " " + namespase
-	testcmd := "kubectl get po -n " + namespase
-	cmd := exec.Command(testcmd)
+	updateCmd := "set image deploy" + " " + deployname + " " + deployname + "=" + image + " " + "-n" + " " + namespase
+	testcmd := "get po -n " + namespase
+	cmd := exec.Command("/usr/bin/kubelet", testcmd)
 	var out bytes.Buffer
 	cmd.Stdout = &out
 	err := cmd.Run()
